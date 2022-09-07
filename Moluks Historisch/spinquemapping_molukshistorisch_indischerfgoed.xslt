@@ -10,6 +10,8 @@
     xmlns:ore="http://www.openarchives.org/ore/terms/"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:niod="https://data.niod.nl/"
+    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
@@ -18,7 +20,8 @@
 
     <xsl:template match="rdf:RDF">
         <!-- De dataset wordt voor Indisch Erfgoed eerst gefilterd op creatiedata tussen 1930 en 1969 -->
-        <xsl:if test="su:matches(edm:ProvidedCHO/dcterms:created, '.*19[3-6].*')">
+        <!-- Filter staat uit voor testpurposes -->
+        <!-- <xsl:if test="su:matches(edm:ProvidedCHO/dcterms:created, '.*19[3-6].*')"> -->
             <xsl:variable name="id" select="su:replaceAll(edm:ProvidedCHO/dc:identifier, ' ', '-')"/>
             <xsl:variable name="organizationId">molukshistorisch</xsl:variable>
             <xsl:variable name="record" select="su:uri($base, $organizationId, 'record', $id)"/>
@@ -67,12 +70,12 @@
             <xsl:apply-templates select="edm:ProvidedCHO/dcterms:spatial">
                 <xsl:with-param name="record" select="$record"/>
             </xsl:apply-templates>
-        </xsl:if>
+        <!-- </xsl:if> -->
     </xsl:template>
 
     <xsl:template match="edm:ProvidedCHO/dc:subject">
         <xsl:param name="record"/>
-        <spinque:attribute subject="{$record}" attribute="sdo:about" type="string" value="{.}"/>
+        <spinque:attribute subject="{$record}" attribute="sdo:keywords" type="string" value="{.}"/>
     </xsl:template>
 
     <xsl:template match="edm:ProvidedCHO/dcterms:spatial">

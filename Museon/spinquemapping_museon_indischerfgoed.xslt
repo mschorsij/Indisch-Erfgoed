@@ -10,11 +10,25 @@
     xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:europeana="http://www.europeana.eu/schemas/ese/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:niod="https://data.niod.nl/"
+    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
 
     <xsl:variable name="base">https://www.indischerfgoed.nl/</xsl:variable>
+    <!-- De dataset wordt voor Indisch Erfgoed eerst gefilterd op creatiedata tussen 1930 en 1969 en op relatie met het thema aan de hand van de keywords -->
+    <!-- Filter staat uit voor testpurposes -->
+        <!-- <xsl:if test="su:matches(dcterms:created, '.*19[3-6].*')
+          and (contains(su:lowercase(dc_subject), 'Indonesi')
+          or contains(su:lowercase(dc_subject), 'Nederlands-Indi')
+          or contains(su:lowercase(dc_subject), 'Indonesisch')
+          or contains(su:lowercase(dc_subject), 'Japan')
+          or contains(su:lowercase(dc_coverage), 'Indonesi')
+          or contains(su:lowercase(dc_coverage), 'Nederlands-Indi')
+          or contains(su:lowercase(dc_coverage), 'Nederlands Oost-Indi')
+          or contains(su:lowercase(dc_coverage), 'Nieuw-Guinea')
+          or contains(su:lowercase(dc_coverage), 'Japan'))"> -->
 
     <xsl:template match="Records">
         <xsl:variable name="id" select="ccObjectID"/>
@@ -48,7 +62,7 @@
             </xsl:when>
             <!-- dag maand (tekst) jaar -->
             <xsl:when test="su:matches(dc_date, '\d{1,2}\s\w+\s\d{4}')">
-                <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{su:parseDate(dc_date, 'nl-nl', 'dd MMM yyyy')}" type="date"/>
+                <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{su:parseDate(dc_date, 'nl-nl', 'd MMMM yyyy', 'dd MMMM yyyy')}" type="date"/>
             </xsl:when>
             <!-- Alle andere situaties -->
             <xsl:otherwise>
@@ -109,7 +123,7 @@
         <xsl:apply-templates select="dc_coverage">
             <xsl:with-param name="record" select="$record"/>
         </xsl:apply-templates>
-
+<!-- </xsl:if> -->
     </xsl:template>
 
     <xsl:template match="dc_creator">
@@ -138,7 +152,7 @@
 
     <xsl:template match="dc_subject">
         <xsl:param name="record"/>
-            <spinque:attribute subject="{$record}" attribute="sdo:about" type="string" value="{.}"/>
+            <spinque:attribute subject="{$record}" attribute="sdo:keywords" type="string" value="{.}"/>
     </xsl:template>
 
     <xsl:template match="dc_coverage">
@@ -149,7 +163,7 @@
             </xsl:when>
             <!-- Als de locatie een kamp is wordt het een trefwoord, zodat het gematcht kan worden met de WO2_Thesaurus -->
             <xsl:when test="contains(su:lowercase(.), 'kamp')">
-                <spinque:attribute subject="{$record}" attribute="sdo:about" value="{.}"  type="string" />
+                <spinque:attribute subject="{$record}" attribute="sdo:keywords" value="{.}"  type="string" />
             </xsl:when>
             <xsl:otherwise>
                 <spinque:attribute subject="{$record}" attribute="sdo:contentLocation" value="{.}" type="string"/>

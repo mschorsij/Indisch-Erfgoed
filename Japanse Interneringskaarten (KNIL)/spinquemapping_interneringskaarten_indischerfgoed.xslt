@@ -5,6 +5,8 @@
     xmlns:su="com.spinque.tools.importStream.Utils"
     xmlns:ad="com.spinque.tools.extraction.socialmedia.AccountDetector"
     xmlns:spinque="com.spinque.tools.importStream.EmitterWrapper"
+    xmlns:niod="https://data.niod.nl/"
+    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -12,6 +14,7 @@
 	<xsl:variable name="base">https://www.indischerfgoed.nl/</xsl:variable>
 
 	<xsl:template match="row">
+      <!-- In deze mapping wordt geen filtering vooraf toegepast, we gaan er van uit dat alle records relevant zijn voor Indisch Erfgoed -->
       <xsl:variable name="name">
           <!--  Correctie van onregelmatigheden in het Naam veld-->
         	<xsl:choose>
@@ -39,7 +42,7 @@
     	<spinque:relation subject="{$record}" predicate="rdf:type" object="prov:Entity"/>
       <spinque:attribute subject="{$record}" attribute="sdo:url" value="{$url}" type="string"/>
       <spinque:relation subject="{$record}" predicate="sdo:publisher" object="niod:Organizations/113"/>
-      <!-- dataset toevoegen, hoe heet deze bij NA? Wat voor attribute kunnen we hiervoor gebruiken? -->
+      <!-- dataset toevoegen? Hoe heet deze bij NA? Wat voor attribute kunnen we hiervoor gebruiken? -->
 
       <spinque:relation subject="{$person}" predicate="prov:wasDerivedFrom" object="{$record}"/>
 
@@ -147,7 +150,7 @@
       <!-- <spinque:attribute subject="{$person}" attribute="sdo:birthPlace" value="{$birthPlace}" type="string"/> -->
       <spinque:attribute subject="{$person}" attribute="sdo:deathPlace" value="{$deathPlace}" type="string"/>
 
-      <!-- trefwoorden betrokkenheid -->
+      <!-- Harde mapping van alle personen in deze dataset met WO2 thesaurus. Liggen deze relaties echt vast? Wat kan hier weg, wat moet er bij? Moeten we niet matchen met Indische thesaurus? -->
       <spinque:relation subject="{$person}" predicate="sdo:memberOf" object="niod:WO2_Thesaurus/corporaties/4562"/> <!-- Soort betrokkene = KNIL -->
       <spinque:relation subject="{$person}" predicate="sdo:memberOf" object="niod:WO2_Thesaurus/1877"/> <!-- Soort betrokkene = Marine -->
       <spinque:relation subject="{$person}" predicate="sdo:memberOf" object="niod:WO2_Thesaurus/11195"/> <!-- Soort betrokkene = Militair in Nederlands Indië -->
@@ -222,11 +225,12 @@
           </xsl:choose>
       </xsl:variable>
       <spinque:attribute subject="{$imprisonment}" attribute="sdo:location" value="{$camp_name}" type="string"/>
-      <spinque:attribute subject="{$imprisonment}" attribute="sdo:startDate" value="{su:parseDate(field[@name='date_of_capture'],'yyyy-MM-dd')}" type="date"/><!-- dit is de zelfde datum als bij de arrestatie. Dat hoeft niet te kloppen -->
+      <spinque:attribute subject="{$imprisonment}" attribute="sdo:startDate" value="{su:parseDate(field[@name='date_of_capture'],'yyyy-MM-dd')}" type="date"/>
+      <!-- dit is de zelfde datum als bij de arrestatie. Dat hoeft niet te kloppen -->
       <spinque:attribute subject="{$imprisonment}" attribute="sdo:alternateName" value="{concat($name , ' heeft gevangen gezeten in ', $camp_name,'.')}" type="string"/>
       <spinque:attribute subject="{$imprisonment}" attribute="sdo:description" value="{concat('Vanaf ${startDate}', ' heeft ', $name , ' gevangen gezeten in ', $camp_name,'.')}" type="string"/>
 
-    <!-- Transfer als event is nieuw. Kan dit wel als event worden? -->
+    <!-- Transfer als event is nieuw. Kan dit wel als event worden gemodelleerd? -->
     <xsl:variable name="transfer">
         <xsl:choose>
             <xsl:when test="field[@name='Other_info1'] != ''">
