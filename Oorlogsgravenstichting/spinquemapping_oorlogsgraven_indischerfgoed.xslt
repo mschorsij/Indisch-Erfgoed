@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet
-    version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:su="com.spinque.tools.importStream.Utils"
     xmlns:ad="com.spinque.tools.extraction.socialmedia.AccountDetector"
     xmlns:spinque="com.spinque.tools.importStream.EmitterWrapper"
+    xmlns:oai="http://www.openarchives.org/OAI/2.0/"
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:sdo="https://schema.org/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:europeana="http://www.europeana.eu/schemas/ese/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:niod="https://data.niod.nl/"
-    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
@@ -106,66 +110,66 @@
 
             <!-- Life events -->
             <xsl:if test="$birthDate != ''">
-                <xsl:variable name="birth_event" select="su:uri($person, 'birth')"/>
-                <spinque:relation subject="{$birth_event}" predicate="rdf:type" object="sdo:Event"/>
-                <spinque:relation subject="{$birth_event}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/6360"/>
-                <spinque:attribute subject="{$birth_event}" attribute="rdfs:label" value="Geboorte" type="string"/>
-                <spinque:relation subject="{$birth_event}" predicate="prov:wasDerivedFrom" object="{$record}"/>
-                <spinque:relation subject="{$birth_event}" predicate="sdo:actor" object="{$person}"/>
-                <spinque:attribute subject="{$birth_event}" attribute="sdo:location" value="{$birthPlace}" type="string"/>
-                <spinque:attribute subject="{$birth_event}" attribute="sdo:date" value="{$birthDate}" type="date"/>
+                <xsl:variable name="birth" select="su:uri($person, 'birth')"/>
+                <spinque:relation subject="{$birth}" predicate="rdf:type" object="sdo:Event"/>
+                <spinque:relation subject="{$birth}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/6360"/>
+                <spinque:attribute subject="{$birth}" attribute="rdfs:label" value="Geboorte" type="string"/>
+                <spinque:relation subject="{$birth}" predicate="prov:wasDerivedFrom" object="{$record}"/>
+                <spinque:relation subject="{$birth}" predicate="sdo:actor" object="{$person}"/>
+                <spinque:attribute subject="{$birth}" attribute="sdo:location" value="{$birthPlace}" type="string"/>
+                <spinque:attribute subject="{$birth}" attribute="sdo:date" value="{$birthDate}" type="date"/>
                 <xsl:variable name="birthPlaceLabel">
                     <xsl:if test="$birthPlace != ''">
                         <xsl:value-of select="concat(' in ', $birthPlace)"/>
                     </xsl:if>
                 </xsl:variable>
-                <spinque:attribute subject="{$birth_event}" attribute="sdo:alternateName" value="{concat($name, ' is geboren', $birthPlaceLabel,'.')}" type="string"/>
-                <spinque:attribute subject="{$birth_event}" attribute="sdo:description" value="{concat($name, ' is geboren op ${date}', $birthPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$birth}" attribute="sdo:alternateName" value="{concat($name, ' is geboren', $birthPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$birth}" attribute="sdo:description" value="{concat($name, ' is geboren op ${date}', $birthPlaceLabel,'.')}" type="string"/>
             </xsl:if>
 
             <xsl:if test="$deathDate != ''">
-           			<xsl:variable name="death_event" select="su:uri($person, 'death')"/>
-                <spinque:relation subject="{$death_event}" predicate="rdf:type" object="sdo:Event"/>
-                <spinque:relation subject="{$death_event}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
-                <spinque:attribute subject="{$death_event}" attribute="rdfs:label" value="Omgekomen" type="string"/>
-                <spinque:relation subject="{$death_event}" predicate="prov:wasDerivedFrom" object="{$record}"/>
-                <spinque:relation subject="{$death_event}" predicate="sdo:actor" object="{$person}"/>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:date" value="{$deathDate}" type="date"/>
+           			<xsl:variable name="death" select="su:uri($person, 'death')"/>
+                <spinque:relation subject="{$death}" predicate="rdf:type" object="sdo:Event"/>
+                <spinque:relation subject="{$death}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
+                <spinque:attribute subject="{$death}" attribute="rdfs:label" value="Dood" type="string"/>
+                <spinque:relation subject="{$death}" predicate="prov:wasDerivedFrom" object="{$record}"/>
+                <spinque:relation subject="{$death}" predicate="sdo:actor" object="{$person}"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:date" value="{$deathDate}" type="date"/>
                 <xsl:variable name="deathPlaceLabel">
                     <xsl:if test="$deathPlace != ''">
                         <xsl:value-of select="concat(' in ', $deathPlace)"/>
                     </xsl:if>
                 </xsl:variable>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:alternateName" value="{concat($name, ' is omgekomen', $deathPlaceLabel,'.')}" type="string"/>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:description" value="{concat($name, ' is omgekomen op ${date} ', $deathPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:alternateName" value="{concat($name, ' is omgekomen', $deathPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat($name, ' is omgekomen op ${date} ', $deathPlaceLabel,'.')}" type="string"/>
           	</xsl:if>
 
     <!-- In onderstaande variant zit een onderscheid tussen omgekomen en overleden, kunnen we daar wat mee in Indisch Erfgoed? -->
             <!-- <xsl:if test="($deathDate != '') and ($name != 'Rosette Susanna Manus') and ($name != 'Roosje Wolf-Leezer')">
-                <xsl:variable name="death_event" select="su:uri($person, 'death')"/>
+                <xsl:variable name="death" select="su:uri($person, 'death')"/>
                 <xsl:choose>
                     <xsl:when test="number(su:substringBefore($deathDate,'-') &lt; 1946)">
 
-                        <spinque:attribute subject="{$death_event}" attribute="sdo:name" value="Omgekomen" type="string"/>
-                        <spinque:relation subject="{$death_event}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
+                        <spinque:attribute subject="{$death}" attribute="sdo:name" value="Omgekomen" type="string"/>
+                        <spinque:relation subject="{$death}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
               <xsl:variable name="deathPlaceLabel"><xsl:if test="$deathPlace != ''"><xsl:value-of select="concat(' in ', su:trim($deathPlace))"/></xsl:if></xsl:variable>
-              <spinque:attribute subject="{$death_event}" attribute="sdo:alternateName" value="{concat($name , ' is omgekomen', $deathPlaceLabel)}" type="string"/>
-                    <spinque:attribute subject="{$death_event}" attribute="sdo:description" value="{concat('Op ${date} is ', $name , ' omgekomen', $deathPlaceLabel,'.')}" type="string"/>
+              <spinque:attribute subject="{$death}" attribute="sdo:alternateName" value="{concat($name , ' is omgekomen', $deathPlaceLabel)}" type="string"/>
+                    <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat('Op ${date} is ', $name , ' omgekomen', $deathPlaceLabel,'.')}" type="string"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <spinque:attribute subject="{$death_event}" attribute="sdo:name" value="Overleden" type="string"/>
-                        <spinque:relation subject="{$death_event}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/6361"/>
+                        <spinque:attribute subject="{$death}" attribute="sdo:name" value="Overleden" type="string"/>
+                        <spinque:relation subject="{$death}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/6361"/>
               <xsl:variable name="deathPlaceLabel"><xsl:if test="$deathPlace != ''"><xsl:value-of select="concat(' in ', su:trim($deathPlace))"/></xsl:if></xsl:variable>
-              <spinque:attribute subject="{$death_event}" attribute="sdo:alternateName" value="{concat($name , ' is overleden', $deathPlaceLabel)}" type="string"/>
-                    <spinque:attribute subject="{$death_event}" attribute="sdo:description" value="{concat('Op ${date} is ', $name , ' overleden', $deathPlaceLabel,'.')}" type="string"/>
+              <spinque:attribute subject="{$death}" attribute="sdo:alternateName" value="{concat($name , ' is overleden', $deathPlaceLabel)}" type="string"/>
+                    <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat('Op ${date} is ', $name , ' overleden', $deathPlaceLabel,'.')}" type="string"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                <spinque:relation subject="{$death_event}" predicate="rdf:type" object="sdo:Event"/>
-                <spinque:relation subject="{$death_event}" predicate="prov:wasDerivedFrom" object="{$record}"/>
-                <spinque:relation subject="{$death_event}" predicate="sdo:actor" object="{$person}"/>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:date" value="{$deathDate}" type="date"/>
-                <spinque:attribute subject="{$death_event}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
+                <spinque:relation subject="{$death}" predicate="rdf:type" object="sdo:Event"/>
+                <spinque:relation subject="{$death}" predicate="prov:wasDerivedFrom" object="{$record}"/>
+                <spinque:relation subject="{$death}" predicate="sdo:actor" object="{$person}"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:date" value="{$deathDate}" type="date"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
 
             </xsl:if> -->
 
@@ -197,7 +201,7 @@
                 				<spinque:relation subject="{$recordImage}" predicate="rdf:type" object="sdo:CreativeWork"/>
                 				<spinque:relation subject="{$recordImage}" predicate="rdf:type" object="sdo:ImageObject"/>
                 				<spinque:relation subject="{$recordImage}" predicate="sdo:publisher" object="niod:Organizations/293"/>
-                				<spinque:attribute subject="{$recordImage}" attribute="sdo:maintainer" value="Oorlogsgravenstichting" type="string"/>
+                				<spinque:relation subject="{$recordImage}" predicate="sdo:maintainer" object="niod:Organizations/293"/>
                 				<spinque:relation subject="{$recordImage}" predicate="prov:wasDerivedFrom" object="{$record}"/>
                 				<spinque:attribute subject="{$recordImage}" attribute="sdo:position" value="2" type="integer"/><!-- weging van plaatje tov andere afbeeldingen bij persoon /-->
                 				<spinque:attribute subject="{$recordImage}" attribute="sdo:caption" value="{images/node/title}" type="string"/>
@@ -210,7 +214,7 @@
                       <spinque:relation subject="{$recordImage}" predicate="rdf:type" object="sdo:CreativeWork"/>
                       <spinque:relation subject="{$recordImage}" predicate="rdf:type" object="sdo:ImageObject"/>
                       <spinque:relation subject="{$recordImage}" predicate="sdo:publisher" object="niod:Organizations/293"/>
-                      <spinque:attribute subject="{$recordImage}" attribute="sdo:maintainer" value="Oorlogsgravenstichting" type="string"/>
+                      <spinque:relation subject="{$recordImage}" predicate="sdo:maintainer" object="niod:Organizations/293"/>
                       <spinque:relation subject="{$recordImage}" predicate="sdo:about" object="{$person}"/>
                       <spinque:relation subject="{$recordImage}" predicate="prov:wasDerivedFrom" object="{$record}"/>
                       <spinque:attribute subject="{$recordImage}" attribute="sdo:position" value="3" type="integer"/><!-- weging van plaatje tov andere afbeeldingen bij persoon /-->

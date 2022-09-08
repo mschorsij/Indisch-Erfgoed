@@ -1,0 +1,77 @@
+<results>
+<hits>
+<node>
+        <_source>
+          <profession>Werkmeester R.W.I.</profession>
+          <images>
+            <node>
+              <main_image>false</main_image>
+              <id>1053</id>
+              <title/>
+              <type/>
+              <linked_to>Graf</linked_to>
+              <url>https://srs.live.wem.io/filestore/si/5150199/1053/5150208/Grafmonument%20Leeuwengarde.2009.jpg?etag=cecc0d47c6481a284e889aace22b2805</url>
+            </node>
+            <node>
+              <main_image>false</main_image>
+              <id>34913</id>
+              <title/>
+              <type/>
+              <linked_to>Begraafplaats</linked_to>
+              <url>https://srs.live.wem.io/filestore/si/5150199/34913/5150208/1378324906.jpg?etag=3550fd4b267f1d660c52f646de6a9ac7</url>
+            </node>
+            <node>
+              <main_image>true</main_image>
+              <id>36122</id>
+              <title/>
+              <type/>
+              <linked_to>Slachtoffer</linked_to>
+              <url>https://srs.live.wem.io/filestore/si/5150199/36122/5150208/1402636646.jpg?etag=8d423c18d221fac403d8f3be64f47fb5</url>
+            </node>
+          </images>
+          <gender>Man</gender>
+          <title_noble/>
+          <date_of_birth>1916-02-27</date_of_birth>
+          <place_of_birth>Tjepoe</place_of_birth>
+          <military_component>KNIL.</military_component>
+          <national_archive/>
+          <last_known_address>
+            <address></address>
+            <province/>
+            <city>Amsterdam</city>
+            <postal_code/>
+          </last_known_address>
+          <date_of_death>1945-05-06</date_of_death>
+          <name>
+            <maiden_name/>
+            <first_names>Eduard Ferdinand</first_names>
+            <full_name>E.F. Aubri</full_name>
+            <initials>E.F.</initials>
+            <middle_names/>
+            <surname>Aubri</surname>
+          </name>
+          <rank>Sld. M.G.D.</rank>
+          <_id>4637</_id>
+          <categories>
+            <node>
+              <name>Nederland</name>
+            </node>
+            <node>
+              <name>Krijgsgevangene Japan</name>
+            </node>
+            <node>
+              <name>Birmaspoorweg</name>
+            </node>
+            <node>
+              <name>Man</name>
+            </node>
+            <node>
+              <name>KNIL</name>
+            </node>
+          </categories>
+          <url_ogs_website>https://www.oorlogsgravenstichting.nl/persoon/4637/eduard-ferdinand-aubri</url_ogs_website>
+          <place_of_death>Adalon, 82 km.</place_of_death>
+        </_source>
+        </node>
+      </hits>
+      </results>

@@ -3,9 +3,14 @@
     xmlns:su="com.spinque.tools.importStream.Utils"
     xmlns:ad="com.spinque.tools.extraction.socialmedia.AccountDetector"
     xmlns:spinque="com.spinque.tools.importStream.EmitterWrapper"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:oai="http://www.openarchives.org/OAI/2.0/"
     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:sdo="https://schema.org/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:europeana="http://www.europeana.eu/schemas/ese/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:niod="https://data.niod.nl/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
@@ -31,7 +36,7 @@
         <xsl:variable name="record" select="su:uri($base, $organizationId, 'record', $id)"/>
 
         <spinque:relation subject="{$record}" predicate="rdf:type" object="sdo:CreativeWork"/>
-        <!-- Deze collectie bestaat uit videomateriaal en krijgt daarom de klasse schema:VideoObject -->
+        <!-- Deze collectie bestaat uit videomateriaal en krijgt daarom de schema klasse VideoObject -->
         <spinque:relation subject="{$record}" predicate="rdf:type" object="sdo:VideoObject"/>
 
         <spinque:attribute subject="{$record}" attribute="sdo:url" value="{concat('https://www.openbeelden.nl/media/',  substring-after(../../oai:header/oai:identifier, 'openimages.eu:'))}" type="string"/>

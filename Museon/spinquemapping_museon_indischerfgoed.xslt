@@ -11,7 +11,6 @@
     xmlns:europeana="http://www.europeana.eu/schemas/ese/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:niod="https://data.niod.nl/"
-    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
@@ -40,7 +39,7 @@
         <spinque:relation subject="{$record}" predicate="rdf:type" object="sdo:VisualArtwork"/>
 
         <spinque:attribute subject="{$record}" attribute="sdo:url" value="{europeana_isshownat}" type="string"/>
-        <spinque:attribute subject="{$record}" attribute="sdo:image" value="{concat('https://cc.museon.nl/imageproxy.aspx?server=localhost&amp;port=17512&amp;filename=images/', image)}" type="string"/>
+        <spinque:attribute subject="{$record}" attribute="sdo:contentUrl" value="{concat('https://cc.museon.nl/imageproxy.aspx?server=localhost&amp;port=17512&amp;filename=images/', image)}" type="string"/>
         <spinque:attribute subject="{$record}" attribute="sdo:identifier" value="{invnrobjnaam}" type="string"/>
         <spinque:attribute subject="{$record}" attribute="sdo:abstract" value="{dc_description}"  lang="nl" type="string"/>
         <spinque:attribute subject="{$record}" attribute="sdo:material" value="{icn_material}" type="string"/>
@@ -51,10 +50,6 @@
 
         <!-- Hier worden zoveel mogelijk bruikbare data onttrokken aan het veld dc_date  -->
         <xsl:choose>
-            <!-- jaar -->
-            <xsl:when test="su:matches(dc_date, '\d{4}')">
-                <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{dc_date}" type="integer"/>
-            </xsl:when>
             <!-- jaar-jaar -->
             <xsl:when test="su:matches(dc_date, '\d{4}-\d{4}')">
               <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{substring(dc_date, 1,4)}" type="integer"/>
@@ -62,7 +57,11 @@
             </xsl:when>
             <!-- dag maand (tekst) jaar -->
             <xsl:when test="su:matches(dc_date, '\d{1,2}\s\w+\s\d{4}')">
-                <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{su:parseDate(dc_date, 'nl-nl', 'd MMMM yyyy', 'dd MMMM yyyy')}" type="date"/>
+                <spinque:attribute subject="{$record}" attribute="sdo:date" value="{su:parseDate(dc_date, 'nl-nl', 'd MMMM yyyy', 'dd MMMM yyyy')}" type="date"/>
+            </xsl:when>
+            <!-- jaar -->
+            <xsl:when test="su:matches(dc_date, '\d{4}')">
+                <spinque:attribute subject="{$record}" attribute="sdo:date" value="{dc_date}" type="integer"/>
             </xsl:when>
             <!-- Alle andere situaties -->
             <xsl:otherwise>

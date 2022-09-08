@@ -31,7 +31,7 @@
             <spinque:relation subject="{$record}" predicate="rdf:type" object="sdo:ImageObject"/>
 
             <spinque:attribute subject="{$record}" attribute="sdo:url" value="{edm:ProvidedCHO/@rdf:about}" type="string"/>
-            <spinque:attribute subject="{$record}" attribute="sdo:image" value="{ore:Aggregation/edm:isShownBy/@rdf:resource}" type="string"/>
+            <spinque:attribute subject="{$record}" attribute="sdo:contentUrl" value="{ore:Aggregation/edm:isShownBy/@rdf:resource}" type="string"/>
             <spinque:attribute subject="{$record}" attribute="sdo:identifier" value="{edm:ProvidedCHO/dc:identifier}" type="string"/>
             <spinque:attribute subject="{$record}" attribute="sdo:name" value="{edm:ProvidedCHO/dc:title}" type="string"/>
             <spinque:attribute subject="{$record}" attribute="sdo:abstract" value="{edm:ProvidedCHO/dc:description}"  lang="nl" type="string"/>
@@ -44,18 +44,18 @@
 
             <!-- Hier worden zoveel mogelijk bruikbare data onttrokken aan het veld dcterms:created  -->
             <xsl:choose>
-                <!-- jaar -->
-                <xsl:when test="su:matches(edm:ProvidedCHO/dcterms:created, '\d{4}')">
-                    <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{edm:ProvidedCHO/dcterms:created}" type="integer"/>
+                <!-- dag maand (tekst) jaar -->
+                <xsl:when test="su:matches(edm:ProvidedCHO/dcterms:created, '\d{1,2}\s\w+\s\d{4}')">
+                    <spinque:attribute subject="{$record}" attribute="sdo:date" value="{su:parseDate(edm:ProvidedCHO/dcterms:created, 'nl-nl', 'dd MMM yyyy')}" type="date"/>
                 </xsl:when>
                 <!-- jaar - jaar -->
                 <xsl:when test="su:matches(edm:ProvidedCHO/dcterms:created, '\d{4}\s*-\s*\d{4}')">
                   <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{substring(edm:ProvidedCHO/dcterms:created, 1,4)}" type="integer"/>
                   <spinque:attribute subject="{$record}" attribute="sdo:endDate" value="{su:trim(substring(edm:ProvidedCHO/dcterms:created, string-length(dcterms:created)-4))}" type="integer"/>
                 </xsl:when>
-                <!-- dag maand (tekst) jaar -->
-                <xsl:when test="su:matches(edm:ProvidedCHO/dcterms:created, '\d{1,2}\s\w+\s\d{4}')">
-                    <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{su:parseDate(edm:ProvidedCHO/dcterms:created, 'nl-nl', 'dd MMM yyyy')}" type="date"/>
+                <!-- jaar -->
+                <xsl:when test="su:matches(edm:ProvidedCHO/dcterms:created, '\d{4}')">
+                    <spinque:attribute subject="{$record}" attribute="sdo:date" value="{edm:ProvidedCHO/dcterms:created}" type="integer"/>
                 </xsl:when>
                 <!-- Alle andere situaties -->
                 <xsl:otherwise>

@@ -11,7 +11,6 @@
     xmlns:europeana="http://www.europeana.eu/schemas/ese/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:niod="https://data.niod.nl/"
-    xmlns:schema="https://schema.org/"
     extension-element-prefixes="spinque">
 
     <xsl:output method="text" encoding="UTF-8"/>
@@ -43,7 +42,7 @@
             <!-- De object URL zijn achterhaald, de forward werkt niet altijd, daarom hier een fix -->
             <spinque:attribute subject="{$record}" attribute="sdo:url" value="{su:replace(europeana:isShownAt, 'http://nimh-beeldbank.defensie.nl/memorix/', 'https://nimh-beeldbank.defensie.nl/foto-s/detail/')}" type="string"/>
             <!-- De image URL's resolven wel -->
-            <spinque:attribute subject="{$record}" attribute="sdo:image" value="{europeana:isShownBy}" type="string"/>
+            <spinque:attribute subject="{$record}" attribute="sdo:contentUrl" value="{europeana:isShownBy}" type="string"/>
             <spinque:attribute subject="{$record}" attribute="sdo:identifier" value="{dc:identifier}" type="string"/>
             <!-- Er is geen titel, daarom wordt de description hier de titel -->
             <spinque:attribute subject="{$record}" attribute="sdo:name" value="{su:stripTags(dc:description)}" type="string"/>
@@ -51,7 +50,6 @@
             <spinque:attribute subject="{$record}" attribute="sdo:material" value="{dc:type}" type="string"/>
             <spinque:relation subject="{$record}" predicate="sdo:publisher" object="niod:Organizations/4"/>
             <spinque:relation subject="{$record}" predicate="sdo:license" object="{europeana:rights}"/>
-            <spinque:attribute subject="{$record}" attribute="sdo:creditText" value="{dcterms:isPartOf}" type="string"/>
             <spinque:attribute subject="{$record}" attribute="sdo:inLanguage" value="nl" type="string"/>
 
             <!-- Hier worden zoveel mogelijk bruikbare data onttrokken aan het veld dcterms:created  -->
@@ -73,11 +71,11 @@
                 </xsl:when>
                 <!-- jaar-maand-dag / -->
                 <xsl:when test="su:matches(dcterms:created, '\d{4}\s*-\s*\d{2}\s*-\s*\d{2}\s*/')">
-                  <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{substring(dcterms:created, 1,10)}" type="date"/>
+                  <spinque:attribute subject="{$record}" attribute="sdo:date" value="{substring(dcterms:created, 1,10)}" type="date"/>
                 </xsl:when>
                 <!-- jaar *whatever* / -->
                 <xsl:when test="su:matches(dcterms:created, '\d{4}.*/')">
-                  <spinque:attribute subject="{$record}" attribute="sdo:startDate" value="{substring(dcterms:created, 1,4)}" type="integer"/>
+                  <spinque:attribute subject="{$record}" attribute="sdo:date" value="{substring(dcterms:created, 1,4)}" type="integer"/>
                 </xsl:when>
                 <!-- Alle andere situaties -->
                 <xsl:otherwise>
