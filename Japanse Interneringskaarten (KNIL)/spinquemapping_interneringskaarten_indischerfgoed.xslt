@@ -175,14 +175,14 @@
               </xsl:if>
           </xsl:variable> -->
           <spinque:attribute subject="{$birth}" attribute="sdo:alternateName" value="{concat($name, ' is geboren.')}" type="string"/>
-          <spinque:attribute subject="{$birth}" attribute="sdo:description" value="{concat($name, ' is geboren op ${date}', '.')}" type="string"/>
+          <spinque:attribute subject="{$birth}" attribute="sdo:description" value="{concat('Op ${date} is ', $name, ' geboren.')}" type="string"/>
       </xsl:if>
 
     	<xsl:if test="$deathDate != ''">
      			<xsl:variable name="death" select="su:uri($person, 'death')"/>
           <spinque:relation subject="{$death}" predicate="rdf:type" object="sdo:Event"/>
           <spinque:relation subject="{$death}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
-          <spinque:attribute subject="{$death}" attribute="rdfs:label" value="Dood" type="string"/>
+          <spinque:attribute subject="{$death}" attribute="rdfs:label" value="Overlijden" type="string"/>
           <spinque:relation subject="{$death}" predicate="prov:wasDerivedFrom" object="{$record}"/>
           <spinque:relation subject="{$death}" predicate="sdo:actor" object="{$person}"/>
           <spinque:attribute subject="{$death}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
@@ -193,7 +193,7 @@
               </xsl:if>
           </xsl:variable>
           <spinque:attribute subject="{$death}" attribute="sdo:alternateName" value="{concat($name, ' is omgekomen', $deathPlaceLabel,'.')}" type="string"/>
-          <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat($name, ' is omgekomen op ${date} ', $deathPlaceLabel,'.')}" type="string"/>
+          <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat('Op ${date} is ', $name, ' omgekomen', $deathPlaceLabel,'.')}" type="string"/>
     	</xsl:if>
 
     	<xsl:variable name="arrest" select="su:uri($person, 'arrest', field[@name='date_of_capture'])"/>
@@ -239,7 +239,7 @@
       <spinque:attribute subject="{$imprisonment}" attribute="sdo:startDate" value="{su:parseDate(field[@name='date_of_capture'],'yyyy-MM-dd')}" type="date"/>
       <!-- dit is de zelfde datum als bij de arrestatie. Dat hoeft niet te kloppen -->
       <spinque:attribute subject="{$imprisonment}" attribute="sdo:alternateName" value="{concat($name , ' heeft gevangen gezeten in ', $camp_name,'.')}" type="string"/>
-      <spinque:attribute subject="{$imprisonment}" attribute="sdo:description" value="{concat('Vanaf ${startDate}', ' heeft ', $name , ' gevangen gezeten in ', $camp_name,'.')}" type="string"/>
+      <spinque:attribute subject="{$imprisonment}" attribute="sdo:description" value="{concat('Vanaf ${startDate} heeft ', $name , ' gevangen gezeten in ', $camp_name,'.')}" type="string"/>
 
     <!-- Transfer als event is nieuw. Zou ook als event gemodelleerd kunnen worden, maar niet op basis van de data in deze dataset. Daarom hier alleen als attribute bij de persoon -->
     <xsl:variable name="transfer">

@@ -94,7 +94,7 @@
     </xsl:template>
 
     <xsl:template match="dc:subject">
-        <!-- Meerdere termen in één veld, gescheiden door komma's worden hier als van elkaar gesplitst -->
+        <!-- Meerdere termen in één veld, gescheiden door komma's worden hier van elkaar gesplitst -->
         <xsl:param name="record"/>
         <xsl:for-each select="su:split(., ',')">
             <spinque:attribute subject="{$record}" attribute="sdo:keywords" type="string" value="{.}"/>
@@ -102,7 +102,7 @@
     </xsl:template>
 
     <xsl:template match="dcterms:spatial">
-        <!-- De locatie is in de data geformatteerd als plaats, provincie, land. Dit wordt hier van elkaar gesplitst, maar is dat een goed idee? -->
+      <!-- De opbouw van het locatieveld is Plaats, Provincie, Land, dit wordt hier van elkaar gesplitst -->
         <xsl:param name="record"/>
         <xsl:for-each select="su:split(., ',')">
             <spinque:attribute subject="{$record}" attribute="sdo:contentLocation" type="string" value="{.}"/>

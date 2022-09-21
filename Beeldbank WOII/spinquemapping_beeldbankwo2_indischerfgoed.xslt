@@ -18,7 +18,7 @@
     <xsl:variable name="base">https://www.indischerfgoed.nl/</xsl:variable>
 
   	<xsl:template match="europeana:record">
-        <!-- De WOII Beeldbank van het NIOD gebruiken we alleen voor de volgende instellingen: Bronbeek, Fries Film Archief, Legermuseum, Maritiem Museum Rotterdam, NIOD. Overige instellingen halen we rechtstreeks bij de bron op -->
+        <!-- De WOII Beeldbank van het NIOD gebruiken we alleen voor de volgende instellingen: Bronbeek, Fries Film Archief, Legermuseum, Maritiem Museum Rotterdam, Historisch Centrum Overijssel, NIOD. Overige instellingen halen we rechtstreeks bij de bron op -->
     		<xsl:if test="(dc:publisher = 'Bronbeek')
     			or (dc:publisher = 'Fries Film Archief')
     			or (dc:publisher= 'Legermuseum')
