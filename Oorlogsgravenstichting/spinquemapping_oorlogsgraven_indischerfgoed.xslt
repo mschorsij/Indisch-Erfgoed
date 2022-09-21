@@ -108,7 +108,7 @@
                 <xsl:with-param name="person" select="$person"/>
             </xsl:apply-templates>
 
-            <!-- Life events -->
+            <!-- Life events birth, death, residence-->
             <xsl:if test="$birthDate != ''">
                 <xsl:variable name="birth" select="su:uri($person, 'birth')"/>
                 <spinque:relation subject="{$birth}" predicate="rdf:type" object="sdo:Event"/>
@@ -124,14 +124,14 @@
                     </xsl:if>
                 </xsl:variable>
                 <spinque:attribute subject="{$birth}" attribute="sdo:alternateName" value="{concat($name, ' is geboren', $birthPlaceLabel,'.')}" type="string"/>
-                <spinque:attribute subject="{$birth}" attribute="sdo:description" value="{concat($name, ' is geboren op ${date}', $birthPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$birth}" attribute="sdo:description" value="{concat('Op ${date} is ', $name, ' geboren', $birthPlaceLabel,'.')}" type="string"/>
             </xsl:if>
 
             <xsl:if test="$deathDate != ''">
            			<xsl:variable name="death" select="su:uri($person, 'death')"/>
                 <spinque:relation subject="{$death}" predicate="rdf:type" object="sdo:Event"/>
                 <spinque:relation subject="{$death}" predicate="rdf:type" object="niod:WO2_Thesaurus/events/8772"/>
-                <spinque:attribute subject="{$death}" attribute="rdfs:label" value="Dood" type="string"/>
+                <spinque:attribute subject="{$death}" attribute="rdfs:label" value="Overlijden" type="string"/>
                 <spinque:relation subject="{$death}" predicate="prov:wasDerivedFrom" object="{$record}"/>
                 <spinque:relation subject="{$death}" predicate="sdo:actor" object="{$person}"/>
                 <spinque:attribute subject="{$death}" attribute="sdo:location" value="{$deathPlace}" type="string"/>
@@ -142,7 +142,7 @@
                     </xsl:if>
                 </xsl:variable>
                 <spinque:attribute subject="{$death}" attribute="sdo:alternateName" value="{concat($name, ' is omgekomen', $deathPlaceLabel,'.')}" type="string"/>
-                <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat($name, ' is omgekomen op ${date} ', $deathPlaceLabel,'.')}" type="string"/>
+                <spinque:attribute subject="{$death}" attribute="sdo:description" value="{concat('Op ${date} is ', $name, ' omgekomen', $deathPlaceLabel,'.')}" type="string"/>
           	</xsl:if>
 
     <!-- In onderstaande variant zit een onderscheid tussen omgekomen en overleden, kunnen we daar wat mee in Indisch Erfgoed? -->
@@ -182,13 +182,15 @@
             	<xsl:variable name="residenceLabel">
             		<xsl:choose>
             			<xsl:when test="last_known_address/address != ''">
-            				<xsl:value-of select="concat(last_known_address/address, ' in ', last_known_address/city)"/>
+            				<xsl:value-of select="concat(last_known_address/address, ', ', last_known_address/city)"/>
             			</xsl:when>
             			<xsl:otherwise>
             				<xsl:value-of select="last_known_address/city"/>
             			</xsl:otherwise>
             		</xsl:choose>
             	</xsl:variable>
+              <spinque:attribute subject="{$residence}" attribute="sdo:address" value="{last_known_address/address}" type="string"/>
+              <spinque:attribute subject="{$residence}" attribute="sdo:addressLocality" value="{last_known_address/city}" type="string"/>
               <spinque:attribute subject="{$residence}" attribute="sdo:location" value="{$residenceLabel}" type="string"/>
               <spinque:attribute subject="{$residence}" attribute="sdo:alternateName" value="{concat($name, ' had als laatst bekende adres ', $residenceLabel,'.')}" type="string"/>
             </xsl:if>
